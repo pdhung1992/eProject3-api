@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/duyhungphung/Desktop/APTECH/Sem3-eProject/web_api/web_api/wwwroot/.DS_Store",
+      "PackagePath": "staticwebassets/.DS_Store"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.build.web_api.props",
+      "PackagePath": "build\\web_api.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.buildMultiTargeting.web_api.props",
+      "PackagePath": "buildMultiTargeting\\web_api.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.buildTransitive.web_api.props",
+      "PackagePath": "buildTransitive\\web_api.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.web_api.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

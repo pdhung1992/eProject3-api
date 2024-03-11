@@ -76,3 +76,4 @@
 /Users/duyhungphung/Desktop/APTECH/Sem3-eProject/web_api/web_api/obj/Debug/net7.0/web_api.pdb
 /Users/duyhungphung/Desktop/APTECH/Sem3-eProject/web_api/web_api/obj/Debug/net7.0/web_api.genruntimeconfig.cache
 /Users/duyhungphung/Desktop/APTECH/Sem3-eProject/web_api/web_api/obj/Debug/net7.0/ref/web_api.dll
+/Users/duyhungphung/Desktop/APTECH/Sem3-eProject/web_api/web_api/bin/Debug/net7.0/web_api.staticwebassets.runtime.json

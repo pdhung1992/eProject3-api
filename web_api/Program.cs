@@ -1,7 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,12 +12,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 //add DBContext
 string connectionString = builder.Configuration.GetConnectionString("API");
 
 builder.Services.AddDbContext<web_api.Contexts.DBContext>(
     options => options.UseSqlServer(connectionString)
 );
+
+
 
 //CORS config
 builder.Services.AddCors(p => p.AddPolicy("CorsConfig", build =>
@@ -56,6 +58,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddAuthorization();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,6 +66,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();

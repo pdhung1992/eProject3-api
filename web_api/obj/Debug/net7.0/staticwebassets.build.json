@@ -1,11 +1,37 @@
 {
   "Version": 1,
-  "Hash": "HT4ZTPqEkz4CA4f9VQG3cc6wlHqA8OEDqIDEairku1Y=",
+  "Hash": "47qY9p28cORTHhfRX4MNvX8oWfYn1qNpKlRdP7YQUhM=",
   "Source": "web_api",
   "BasePath": "_content/web_api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "web_api/wwwroot",
+      "Source": "web_api",
+      "ContentRoot": "/Users/duyhungphung/Desktop/APTECH/Sem3-eProject/web_api/web_api/wwwroot/",
+      "BasePath": "_content/web_api",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/duyhungphung/Desktop/APTECH/Sem3-eProject/web_api/web_api/wwwroot/.DS_Store",
+      "SourceId": "web_api",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/duyhungphung/Desktop/APTECH/Sem3-eProject/web_api/web_api/wwwroot/",
+      "BasePath": "_content/web_api",
+      "RelativePath": ".DS_Store",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/.DS_Store"
+    }
+  ]
 }
