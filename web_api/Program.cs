@@ -25,12 +25,20 @@ builder.Services.AddDbContext<web_api.Contexts.DBContext>(
 //CORS config
 builder.Services.AddCors(p => p.AddPolicy("CorsConfig", build =>
 {
-    build.AllowAnyHeader()
+    build.WithOrigins("http://localhost:1111")
+        .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowAnyOrigin();
 }));
 
-//JWT
+//policies
+builder.Services.AddAuthorization(options =>
+{
+   
+});
+
+
+//jwt
 builder.Services.AddAuthentication(auth =>
 {
     auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -50,12 +58,6 @@ builder.Services.AddAuthentication(auth =>
     };
 });
 
-//policies
-builder.Services.AddAuthorization(options =>
-{
-    
-});
-
 builder.Services.AddAuthorization();
 
 
@@ -66,14 +68,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 

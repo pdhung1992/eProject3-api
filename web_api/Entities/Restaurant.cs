@@ -6,7 +6,7 @@ public class Restaurant
 {
     public int Id { get; set; }
     
-    public int Name { get; set; }
+    public string Name { get; set; }
     
     public string Address { get; set; }
     
@@ -22,9 +22,9 @@ public class Restaurant
     
     public string Banner { get; set; }
     
-    public int CityId { get; set; }
-    [ForeignKey("CityId")]
-    public City City { get; set; }
+    public int DistrictId { get; set; }
+    [ForeignKey("DistrictId")]
+    public District District { get; set; }
     
     public int CatId { get; set; }
     [ForeignKey("CatId")]

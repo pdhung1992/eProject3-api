@@ -40,13 +40,27 @@ namespace web_api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FoodTags",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FoodTags", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FoodTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SortOrder = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,11 +73,26 @@ namespace web_api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServeTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Value = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServeTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,6 +109,26 @@ namespace web_api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Districts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CityId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Districts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Districts_Cities_CityId",
+                        column: x => x.CityId,
+                        principalTable: "Cities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,6 +161,7 @@ namespace web_api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    SortOrder = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Prefix = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FaIcon = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -185,7 +235,7 @@ namespace web_api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     JoinDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -193,7 +243,7 @@ namespace web_api.Migrations
                     MinimumDelivery = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Banner = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CityId = table.Column<int>(type: "int", nullable: false),
+                    DistrictId = table.Column<int>(type: "int", nullable: false),
                     CatId = table.Column<int>(type: "int", nullable: false),
                     AdminId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -213,9 +263,9 @@ namespace web_api.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Restaurants_Cities_CityId",
-                        column: x => x.CityId,
-                        principalTable: "Cities",
+                        name: "FK_Restaurants_Districts_DistrictId",
+                        column: x => x.DistrictId,
+                        principalTable: "Districts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -227,15 +277,32 @@ namespace web_api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ResId = table.Column<int>(type: "int", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiscountRate = table.Column<double>(type: "float", nullable: false),
+                    ResId = table.Column<int>(type: "int", nullable: false),
+                    ServeId = table.Column<int>(type: "int", nullable: false),
+                    Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ComboTagId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Combos", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Combos_FoodTags_ComboTagId",
+                        column: x => x.ComboTagId,
+                        principalTable: "FoodTags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Combos_Restaurants_ResId",
                         column: x => x.ResId,
                         principalTable: "Restaurants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Combos_ServeTypes_ServeId",
+                        column: x => x.ServeId,
+                        principalTable: "ServeTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -251,11 +318,19 @@ namespace web_api.Migrations
                     TypeId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ServeId = table.Column<int>(type: "int", nullable: false),
+                    Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FoodTagId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Foods", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Foods_FoodTags_FoodTagId",
+                        column: x => x.FoodTagId,
+                        principalTable: "FoodTags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Foods_FoodTypes_TypeId",
                         column: x => x.TypeId,
@@ -266,6 +341,12 @@ namespace web_api.Migrations
                         name: "FK_Foods_Restaurants_ResId",
                         column: x => x.ResId,
                         principalTable: "Restaurants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Foods_ServeTypes_ServeId",
+                        column: x => x.ServeId,
+                        principalTable: "ServeTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -379,14 +460,39 @@ namespace web_api.Migrations
                 column: "FoodId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Combos_ComboTagId",
+                table: "Combos",
+                column: "ComboTagId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Combos_ResId",
                 table: "Combos",
                 column: "ResId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Combos_ServeId",
+                table: "Combos",
+                column: "ServeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Districts_CityId",
+                table: "Districts",
+                column: "CityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Foods_FoodTagId",
+                table: "Foods",
+                column: "FoodTagId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Foods_ResId",
                 table: "Foods",
                 column: "ResId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Foods_ServeId",
+                table: "Foods",
+                column: "ServeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Foods_TypeId",
@@ -424,9 +530,9 @@ namespace web_api.Migrations
                 column: "CatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Restaurants_CityId",
+                name: "IX_Restaurants_DistrictId",
                 table: "Restaurants",
-                column: "CityId");
+                column: "DistrictId");
         }
 
         /// <inheritdoc />
@@ -457,10 +563,16 @@ namespace web_api.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "FoodTags");
+
+            migrationBuilder.DropTable(
                 name: "FoodTypes");
 
             migrationBuilder.DropTable(
                 name: "Restaurants");
+
+            migrationBuilder.DropTable(
+                name: "ServeTypes");
 
             migrationBuilder.DropTable(
                 name: "Users");
@@ -472,10 +584,13 @@ namespace web_api.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Cities");
+                name: "Districts");
 
             migrationBuilder.DropTable(
                 name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Cities");
         }
     }
 }

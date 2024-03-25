@@ -26,4 +26,23 @@ public class AdminModel
     
     [Required(ErrorMessage = "Role ID is required.")]
     public int RoleId { get; set; }
+    
+    public string? ResName { get; set; }
+    
+    public string? ResAddress { get; set; }
+    
+    public string? ResDescription { get; set; }
+    
+    public string? ResDeliveryHours { get; set; }
+    
+    public string? ResMinimumDelivery { get; set; }
+    
+    public IFormFile? ResThumbnail { get; set; }
+    
+    public IFormFile? ResBanner { get; set; }
+    
+    public int ResDistrictId { get; set; }
+    
+    public int ResCatId { get; set; }
+    
 }

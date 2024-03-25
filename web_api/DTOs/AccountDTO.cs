@@ -10,5 +10,9 @@ public class AccountDTO
     
     public string Email { get; set; }
     
+    public string Telephone { get; set; }
+    
+    public int RoleId { get; set; }
+    
     public string Role { get; set; }
 }

@@ -6,5 +6,5 @@ public class CityModel
 {
     public string Name { get; set; }
     
-    public IFormFile Thumbnail { get; set; }
+    public IFormFile? Thumbnail { get; set; }
 }

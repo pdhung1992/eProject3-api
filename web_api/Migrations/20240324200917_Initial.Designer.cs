@@ -12,7 +12,7 @@ using web_api.Contexts;
 namespace web_api.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20240310221426_Initial")]
+    [Migration("20240324200917_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -157,6 +157,16 @@ namespace web_api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ComboTagId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("DiscountRate")
+                        .HasColumnType("float");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -164,9 +174,20 @@ namespace web_api.Migrations
                     b.Property<int>("ResId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ServeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Thumbnail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("ComboTagId");
+
                     b.HasIndex("ResId");
+
+                    b.HasIndex("ServeId");
 
                     b.ToTable("Combos");
                 });
@@ -194,6 +215,28 @@ namespace web_api.Migrations
                     b.ToTable("ComboDetails");
                 });
 
+            modelBuilder.Entity("web_api.Entities.District", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.ToTable("Districts");
+                });
+
             modelBuilder.Entity("web_api.Entities.Food", b =>
                 {
                     b.Property<int>("Id")
@@ -206,6 +249,9 @@ namespace web_api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("FoodTagId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -214,6 +260,9 @@ namespace web_api.Migrations
                         .HasColumnType("float");
 
                     b.Property<int>("ResId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Thumbnail")
@@ -225,11 +274,32 @@ namespace web_api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FoodTagId");
+
                     b.HasIndex("ResId");
+
+                    b.HasIndex("ServeId");
 
                     b.HasIndex("TypeId");
 
                     b.ToTable("Foods");
+                });
+
+            modelBuilder.Entity("web_api.Entities.FoodTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FoodTags");
                 });
 
             modelBuilder.Entity("web_api.Entities.FoodType", b =>
@@ -241,12 +311,14 @@ namespace web_api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -361,6 +433,9 @@ namespace web_api.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
@@ -390,9 +465,6 @@ namespace web_api.Migrations
                     b.Property<int>("CatId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("DeliveryHours")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -401,6 +473,9 @@ namespace web_api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("DistrictId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("JoinDate")
                         .HasColumnType("datetime2");
 
@@ -408,8 +483,9 @@ namespace web_api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Name")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Thumbnail")
                         .IsRequired()
@@ -421,7 +497,7 @@ namespace web_api.Migrations
 
                     b.HasIndex("CatId");
 
-                    b.HasIndex("CityId");
+                    b.HasIndex("DistrictId");
 
                     b.ToTable("Restaurants");
                 });
@@ -434,6 +510,9 @@ namespace web_api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -441,6 +520,26 @@ namespace web_api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("web_api.Entities.ServeType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServeTypes");
                 });
 
             modelBuilder.Entity("web_api.Entities.User", b =>
@@ -515,13 +614,29 @@ namespace web_api.Migrations
 
             modelBuilder.Entity("web_api.Entities.Combo", b =>
                 {
+                    b.HasOne("web_api.Entities.FoodTag", "FoodTag")
+                        .WithMany()
+                        .HasForeignKey("ComboTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("web_api.Entities.Restaurant", "Restaurant")
                         .WithMany()
                         .HasForeignKey("ResId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("web_api.Entities.ServeType", "ServeType")
+                        .WithMany()
+                        .HasForeignKey("ServeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FoodTag");
+
                     b.Navigation("Restaurant");
+
+                    b.Navigation("ServeType");
                 });
 
             modelBuilder.Entity("web_api.Entities.ComboDetail", b =>
@@ -543,11 +658,34 @@ namespace web_api.Migrations
                     b.Navigation("Food");
                 });
 
+            modelBuilder.Entity("web_api.Entities.District", b =>
+                {
+                    b.HasOne("web_api.Entities.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+                });
+
             modelBuilder.Entity("web_api.Entities.Food", b =>
                 {
+                    b.HasOne("web_api.Entities.FoodTag", "FoodTag")
+                        .WithMany()
+                        .HasForeignKey("FoodTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("web_api.Entities.Restaurant", "Restaurant")
                         .WithMany()
                         .HasForeignKey("ResId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("web_api.Entities.ServeType", "ServeType")
+                        .WithMany()
+                        .HasForeignKey("ServeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -557,9 +695,13 @@ namespace web_api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("FoodTag");
+
                     b.Navigation("FoodType");
 
                     b.Navigation("Restaurant");
+
+                    b.Navigation("ServeType");
                 });
 
             modelBuilder.Entity("web_api.Entities.Order", b =>
@@ -617,9 +759,9 @@ namespace web_api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("web_api.Entities.City", "City")
+                    b.HasOne("web_api.Entities.District", "District")
                         .WithMany()
-                        .HasForeignKey("CityId")
+                        .HasForeignKey("DistrictId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -627,7 +769,7 @@ namespace web_api.Migrations
 
                     b.Navigation("Category");
 
-                    b.Navigation("City");
+                    b.Navigation("District");
                 });
 #pragma warning restore 612, 618
         }

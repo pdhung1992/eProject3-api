@@ -1,9 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.IdentityModel.Tokens;
 using web_api.Contexts;
 using web_api.DTOs;
@@ -203,12 +203,13 @@ namespace web_api.Controllers
                             issuer: _configuration["Issuer"],
                             audience: _configuration["Audience"],
                             claims: payload,
-                            expires: DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["LifeTime"])),
+                            expires: DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["Jwt: LifeTime"])),
                             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
                             );
 
                         List<PermissionDTO> permissions = _dbContext.Permissions
                             .Where(p => p.RoleId == admin.RoleId)
+                            .OrderBy(p => p.SortOrder)
                             .Select(p => new PermissionDTO()
                             {
                                 Name = p.Name,
@@ -216,13 +217,18 @@ namespace web_api.Controllers
                                 FaIcon = p.FaIcon
                             })
                             .ToList();
+                        
+                        Restaurant restaurant = _dbContext.Restaurants.FirstOrDefault(r => r.AdminId == admin.Id);
+                        int? resId = restaurant != null ? restaurant.Id : null;
 
                         return Ok(new AdminDTO()
                         {
+                            Id = admin.Id,
                             Username = admin.Username,
                             FullName = admin.FullName,
                             Token = new JwtSecurityTokenHandler().WriteToken(token),
-                            Permissions = permissions
+                            Permissions = permissions,
+                            ResId = resId
                         });
                     }
                     return Unauthorized("Username or password is not correct.");
@@ -232,6 +238,42 @@ namespace web_api.Controllers
             }
 
             return Unauthorized("Username or password is not correct.");
+        }
+        
+        [HttpPost]
+        [Route("changepassword")]
+        [Authorize]
+        public IActionResult ChangePassword(ChangePwdModel changePwdModel)
+        {
+            var adm = HttpContext.User;
+            var username = adm.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Name)?.Value;
+
+            Admin updateAdm = _dbContext.Admins.SingleOrDefault(e => e.Username == username);
+
+            if (updateAdm != null)
+            {
+                bool passwordMatch = BCrypt.Net.BCrypt.Verify(changePwdModel.currentPassword, updateAdm.Password);
+
+                if (passwordMatch)
+                {
+                    updateAdm.Password = BCrypt.Net.BCrypt.HashPassword(changePwdModel.newPassword);
+                    _dbContext.SaveChanges();
+                    return Ok( new
+                        {
+                            Message = "Password change",
+                            username = username
+                        }
+                    );
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
     }
 }
