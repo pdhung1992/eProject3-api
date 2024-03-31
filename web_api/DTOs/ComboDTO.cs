@@ -8,6 +8,10 @@ public class ComboDTO
     
     public string Description { get; set; }
     
+    public double FullPrice { get; set; }
+    
+    public double ActualPrice { get; set; }
+    
     public double DiscountRate { get; set; }
     
     public int ResId { get; set; }

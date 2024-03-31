@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web_api.Contexts;
 using web_api.DTOs;
@@ -66,6 +67,7 @@ namespace web_api.Controllers
 
         [HttpPost]
         [Route("create")]
+        [Authorize]
         public IActionResult CreateCategory(CategoryModel creModel)
         {
             if (ModelState.IsValid)
@@ -96,6 +98,7 @@ namespace web_api.Controllers
 
         [HttpPost]
         [Route("update/{id}")]
+        [Authorize]
         public IActionResult UpdateCategory(int id, CategoryModel updateModel)
         {
             if (ModelState.IsValid)
@@ -122,6 +125,7 @@ namespace web_api.Controllers
 
         [HttpDelete]
         [Route("delete/{id}")]
+        [Authorize]
         public IActionResult DeleteCategory(int id)
         {
             try

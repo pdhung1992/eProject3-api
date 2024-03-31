@@ -15,6 +15,8 @@ public class RestaurantDTO
     
     public string MinimumDelivery { get; set; }
     
+    public double PrePaidRate { get; set; }
+    
     public string Thumbnail { get; set; }
     
     public string Banner { get; set; }

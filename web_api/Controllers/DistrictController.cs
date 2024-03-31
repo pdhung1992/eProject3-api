@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using web_api.Contexts;
@@ -96,6 +97,7 @@ namespace web_api.Controllers
 
         [HttpPost]
         [Route("create")]
+        [Authorize]
         public IActionResult CreateDistrict(DistrictModel creModel)
         {
             if (ModelState.IsValid)
@@ -126,6 +128,7 @@ namespace web_api.Controllers
 
         [HttpPost]
         [Route("update/{id}")]
+        [Authorize]
         public IActionResult UpdateDistrict(int id, DistrictModel updateModel)
         {
             if (ModelState.IsValid)
@@ -156,6 +159,7 @@ namespace web_api.Controllers
 
         [HttpDelete]
         [Route("delete/{id}")]
+        [Authorize]
         public IActionResult DeleteDistrict(int id)
         {
             try

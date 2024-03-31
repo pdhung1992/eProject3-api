@@ -14,4 +14,5 @@ public class OrderDetail
     [ForeignKey("FoodId")]
     public Food Food { get; set; }
     
+    public double Price { get; set; }
 }

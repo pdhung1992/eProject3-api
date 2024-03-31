@@ -34,6 +34,7 @@ public class AdminModel
     public string? ResDescription { get; set; }
     
     public string? ResDeliveryHours { get; set; }
+    public double PrepaidRate { get; set; }
     
     public string? ResMinimumDelivery { get; set; }
     

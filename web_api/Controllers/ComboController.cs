@@ -37,8 +37,10 @@ namespace web_api.Controllers
                         Name = c.Name,
                         Description = c.Description,
                         DiscountRate = c.DiscountRate,
+                        ServeId = c.ServeType.Id,
                         Serve = c.ServeType.Name,
                         Thumbnail = c.Thumbnail,
+                        ComboTagId = c.FoodTag.Id,
                         Tag = c.FoodTag.Name
                     })
                     .ToList();
@@ -68,10 +70,21 @@ namespace web_api.Controllers
                         DiscountRate = c.DiscountRate,
                         Serve = c.ServeType.Name,
                         Thumbnail = c.Thumbnail,
-                        Tag = c.FoodTag.Name
+                        Tag = c.FoodTag.Name,
                     })
                     .ToList();
+                foreach (var combo in combos)
+                {
+                    combo.FullPrice = _dbContext.ComboDetails
+                        .Include(d => d.Food)
+                        .Where(d => d.ComboId == combo.Id)
+                        .Sum(d => d.Food.Price);
+                    double actualPrice = combo.FullPrice * (100 - combo.DiscountRate) / 100;
+                    combo.ActualPrice = Math.Ceiling(actualPrice);
+                }
+                
                 return Ok(combos);
+                
             }
             catch (Exception e)
             {
@@ -100,7 +113,7 @@ namespace web_api.Controllers
                     .Where(d => d.ComboId == combo.Id)
                     .Select(d => new FoodDTO()
                     {
-                        Id = d.Id,
+                        Id = d.Food.Id,
                         Name = d.Food.Name,
                         TypeId = d.Food.FoodType.Id,
                         Type = d.Food.FoodType.Name,
@@ -122,7 +135,15 @@ namespace web_api.Controllers
                     Serve = combo.ServeType.Name,
                     Thumbnail = combo.Thumbnail,
                     Tag = combo.FoodTag.Name,
-                    Foods = details
+                    Foods = details,
+                    FullPrice = _dbContext.ComboDetails
+                        .Include(d => d.Food)
+                        .Where(d => d.ComboId == combo.Id)
+                        .Sum(d => d.Food.Price),
+                    ActualPrice = Math.Ceiling((_dbContext.ComboDetails
+                        .Include(d => d.Food)
+                        .Where(d => d.ComboId == combo.Id)
+                        .Sum(d => d.Food.Price)) * (100 - combo.DiscountRate) / 100)
                 });
             }
             catch (Exception e)

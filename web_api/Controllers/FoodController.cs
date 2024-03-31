@@ -38,8 +38,10 @@ namespace web_api.Controllers
                         TypeId = f.FoodType.Id,
                         Type = f.FoodType.Name,
                         Tag = f.FoodTag.Name,
+                        FoodTagId = f.FoodTag.Id,
                         Price = f.Price,
                         Serve = f.ServeType.Name,
+                        ServeID = f.ServeType.Id,
                         Description = f.Description,
                         Thumbnail = f.Thumbnail
                     })

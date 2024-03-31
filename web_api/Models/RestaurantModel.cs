@@ -12,6 +12,8 @@ public class RestaurantModel
     
     public string MinimumDelivery { get; set; }
     
+    public double PrePaidRate { get; set; }
+    
     public IFormFile? Thumbnail { get; set; }
     
     public IFormFile? Banner { get; set; }

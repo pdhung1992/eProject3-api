@@ -11,8 +11,6 @@ namespace web_api.Contexts
         }
         
         public DbSet<Admin> Admins { get; set; }
-        public DbSet<Cart> Carts { get; set; }
-        public DbSet<CartDetail> CartDetails { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Combo> Combos { get; set; }
@@ -27,6 +25,7 @@ namespace web_api.Contexts
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<ServeType> ServeTypes { get; set; }
+        public DbSet<Status> Status { get; set; }
         public DbSet<User> Users { get; set; }
     }
 }

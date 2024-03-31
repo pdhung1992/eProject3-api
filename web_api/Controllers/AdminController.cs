@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using web_api.Contexts;
@@ -9,6 +10,7 @@ namespace web_api.Controllers
 {
     [ApiController]
     [Route("/api/accounts")]
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly DBContext _dbContext;
@@ -108,6 +110,7 @@ namespace web_api.Controllers
                             Description = newAccModel.ResDescription,
                             DeliveryHours = newAccModel.ResDeliveryHours,
                             MinimumDelivery = newAccModel.ResMinimumDelivery,
+                            PrePaidRate = newAccModel.PrepaidRate,
                             Thumbnail = thumbName,
                             Banner = bannerName,
                             DistrictId = newAccModel.ResDistrictId,

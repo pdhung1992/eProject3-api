@@ -63,6 +63,7 @@ namespace web_api.Controllers
                 Description = restaurant.Description,
                 DeliveryHours = restaurant.DeliveryHours,
                 MinimumDelivery = restaurant.MinimumDelivery,
+                PrePaidRate = restaurant.PrePaidRate,
                 Thumbnail = restaurant.Thumbnail,
                 Banner = restaurant.Banner,
                 DistrictId = restaurant.District.Id,
@@ -104,6 +105,7 @@ namespace web_api.Controllers
                 Description = restaurant.Description,
                 DeliveryHours = restaurant.DeliveryHours,
                 MinimumDelivery = restaurant.MinimumDelivery,
+                PrePaidRate = restaurant.PrePaidRate,
                 Thumbnail = restaurant.Thumbnail,
                 Banner = restaurant.Banner,
                 DistrictId = restaurant.District.Id,
@@ -138,8 +140,10 @@ namespace web_api.Controllers
                         Name = r.Name,
                         Category = r.Category.Name,
                         District = r.District.Name,
-                        Thumbnail = r.Thumbnail
+                        Thumbnail = r.Thumbnail,
+                        DeliveryHours = r.DeliveryHours
                     })
+                    .OrderBy(x => Guid.NewGuid())
                     .ToList();
                 return Ok(restaurants);
             }
@@ -171,7 +175,8 @@ namespace web_api.Controllers
                         Name = r.Name,
                         Category = r.Category.Name,
                         District = r.District.Name,
-                        Thumbnail = r.Thumbnail
+                        Thumbnail = r.Thumbnail,
+                        DeliveryHours = r.DeliveryHours
                     })
                     .ToList();
                 return Ok(restaurants);
@@ -204,7 +209,8 @@ namespace web_api.Controllers
                         Name = r.Name,
                         Category = r.Category.Name,
                         District = r.District.Name,
-                        Thumbnail = r.Thumbnail
+                        Thumbnail = r.Thumbnail,
+                        DeliveryHours = r.DeliveryHours
                     })
                     .ToList();
                 return Ok(restaurants);
@@ -260,6 +266,7 @@ namespace web_api.Controllers
                 updateRestaurant.Address = updateRestaurantModel.Address;
                 updateRestaurant.Description = updateRestaurantModel.Description;
                 updateRestaurant.DeliveryHours = updateRestaurantModel.DeliveryHours;
+                updateRestaurant.PrePaidRate = updateRestaurantModel.PrePaidRate;
                 updateRestaurant.MinimumDelivery = updateRestaurantModel.MinimumDelivery;
                 updateRestaurant.DistrictId = district.Id;
                 updateRestaurant.CatId = category.Id;

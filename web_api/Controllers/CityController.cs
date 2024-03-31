@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web_api.Contexts;
 using web_api.DTOs;
@@ -66,6 +67,7 @@ namespace web_api.Controllers
 
         [HttpPost]
         [Route("create")]
+        [Authorize]
         public IActionResult CreateCity([FromForm] CityModel creModel)
         {
             if (ModelState.IsValid)
@@ -102,6 +104,7 @@ namespace web_api.Controllers
 
         [HttpPost]
         [Route("update/{id}")]
+        [Authorize]
         public IActionResult UpdateCity([FromForm] CityModel updateCityModel, int id)
         {
             if (ModelState.IsValid)
@@ -143,6 +146,7 @@ namespace web_api.Controllers
 
         [HttpDelete]
         [Route("delete/{id}")]
+        [Authorize]
         public IActionResult DeleteCity(int id)
         {
             try
@@ -165,6 +169,31 @@ namespace web_api.Controllers
                 _dbContext.Cities.Remove(delCity);
                 _dbContext.SaveChanges();
                 return Ok("City deleted.");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("search/key={key}")]
+        public IActionResult SearchCity(string key)
+        {
+            try
+            {
+                string lowercaseKey = key.ToLower();
+                
+                List<CityDTO> cities = _dbContext.Cities
+                    .Where(c => c.Name.ToLower().Contains(lowercaseKey))
+                    .Select(c => new CityDTO()
+                    {
+                        Id = c.Id,
+                        Name = c.Name
+                    })
+                    .ToList();
+                
+                return Ok(cities);
             }
             catch (Exception e)
             {

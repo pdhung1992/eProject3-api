@@ -1,22 +1,10 @@
-using System.ComponentModel.DataAnnotations.Schema;
+namespace web_api.Models;
 
-namespace web_api.Entities;
-
-public class Order
+public class OrderModel
 {
-    public int Id { get; set; }
-    
     public int UserId { get; set; }
-    [ForeignKey("UserId")]
-    public User User { get; set; }
     
     public int RestaurantId { get; set; }
-    [ForeignKey("RestaurantId")]
-    public Restaurant Restaurant { get; set; }
-    
-    public string InvoiceNumber { get; set; }
-    
-    public DateTime OrderDate { get; set; }
     
     public string EventName { get; set; }
     
@@ -41,6 +29,6 @@ public class Order
     public double PrePaid { get; set; }
     
     public int StatusId { get; set; }
-    [ForeignKey("StatusId")]
-    public Status Status { get; set; }
+
+    public List<OrderDetailModel> Details { get; set; }
 }

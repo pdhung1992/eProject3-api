@@ -103,6 +103,7 @@ namespace web_api.Controllers
 
                         return Ok(new UserDTO()
                         {
+                            Id = user.Id,
                             FullName = user.FullName,
                             Email = user.Email,
                             Token = new JwtSecurityTokenHandler().WriteToken(token)
@@ -241,9 +242,9 @@ namespace web_api.Controllers
         }
         
         [HttpPost]
-        [Route("changepassword")]
+        [Route("changepassword/admin")]
         [Authorize]
-        public IActionResult ChangePassword(ChangePwdModel changePwdModel)
+        public IActionResult ChangeAdminPassword(ChangePwdModel changePwdModel)
         {
             var adm = HttpContext.User;
             var username = adm.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Name)?.Value;
@@ -262,6 +263,42 @@ namespace web_api.Controllers
                         {
                             Message = "Password change",
                             username = username
+                        }
+                    );
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+        
+        [HttpPost]
+        [Route("changepassword/user")]
+        [Authorize]
+        public IActionResult ChangeUserPassword(ChangePwdModel changePwdModel)
+        {
+            var user = HttpContext.User;
+            var email = user.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Email)?.Value;
+
+            User updateUser = _dbContext.Users.SingleOrDefault(u => u.Email == email);
+
+            if (updateUser != null)
+            {
+                bool passwordMatch = BCrypt.Net.BCrypt.Verify(changePwdModel.currentPassword, updateUser.Password);
+
+                if (passwordMatch)
+                {
+                    updateUser.Password = BCrypt.Net.BCrypt.HashPassword(changePwdModel.newPassword);
+                    _dbContext.SaveChanges();
+                    return Ok( new
+                        {
+                            Message = "Password change",
+                            Email = email
                         }
                     );
                 }
